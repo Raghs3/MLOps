@@ -26,3 +26,11 @@ y = df["species_encoded"]
 
 print(X.head())
 print(y.head())
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+print("Train size:", X_train.shape, "Test size:", X_test.shape)
+print("Train class distribution:\n", y_train.value_counts())
+print("Test class distribution:\n", y_test.value_counts())
