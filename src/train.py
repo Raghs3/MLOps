@@ -1,5 +1,10 @@
 import pandas as pd
 from sklearn.datasets import load_iris
+import mlflow
+from sklearn.metrics import precision_score, recall_score, f1_score
+
+mlflow.set_tracking_uri("sqlite:///mlflow.db")
+mlflow.set_experiment("Iris_Classification_Experiments")
 
 iris = load_iris(as_frame=True)
 df = iris.frame
@@ -47,8 +52,20 @@ models = {
 }
 
 for name, model in models.items():
-    model.fit(X_train, y_train)
-    preds = model.predict(X_test)
-    acc = accuracy_score(y_test, preds)
-    print(f"{name}: accuracy = {acc:.4f}")
+    with mlflow.start_run(run_name=name):
+        model.fit(X_train, y_train)
+        preds = model.predict(X_test)
+
+        acc = accuracy_score(y_test, preds)
+        prec = precision_score(y_test, preds, average="macro")
+        rec = recall_score(y_test, preds, average="macro")
+        f1 = f1_score(y_test, preds, average="macro")
+
+        mlflow.log_params(model.get_params())
+        mlflow.log_metric("accuracy", acc)
+        mlflow.log_metric("precision", prec)
+        mlflow.log_metric("recall", rec)
+        mlflow.log_metric("f1_score", f1)
+
+        print(f"{name}: accuracy={acc:.4f} precision={prec:.4f} recall={rec:.4f} f1={f1:.4f}")
 
