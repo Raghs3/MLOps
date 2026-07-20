@@ -34,3 +34,21 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 print("Train size:", X_train.shape, "Test size:", X_test.shape)
 print("Train class distribution:\n", y_train.value_counts())
 print("Test class distribution:\n", y_test.value_counts())
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+models = {
+    "LogisticRegression": LogisticRegression(max_iter=200, random_state=42),
+    "DecisionTree": DecisionTreeClassifier(random_state=42),
+    "RandomForest": RandomForestClassifier(random_state=42),
+}
+
+for name, model in models.items():
+    model.fit(X_train, y_train)
+    preds = model.predict(X_test)
+    acc = accuracy_score(y_test, preds)
+    print(f"{name}: accuracy = {acc:.4f}")
+
