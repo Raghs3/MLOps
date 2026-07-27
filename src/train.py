@@ -2,6 +2,9 @@ import pandas as pd
 from sklearn.datasets import load_iris
 import mlflow
 from sklearn.metrics import precision_score, recall_score, f1_score
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix, classification_report
 
 mlflow.set_tracking_uri("sqlite:///mlflow.db")
 mlflow.set_experiment("Iris_Classification_Experiments")
@@ -69,3 +72,20 @@ for name, model in models.items():
 
         print(f"{name}: accuracy={acc:.4f} precision={prec:.4f} recall={rec:.4f} f1={f1:.4f}")
 
+        # Confusion matrix as an image art
+        cm = confusion_matrix(y_test, preds)
+        plt.figure(figsize=(6,5))
+        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
+                    xticklabels=encoder.classes_, yticklabels=encoder.classes_)
+        plt.xlabel("Predicted")
+        plt.ylabel("Actual")
+        plt.title(f"Confusion Matrix - {name}")
+        plt.savefig("confusion_matrix.png", bbox_inches="tight")
+        plt.close()
+        mlflow.log_artifact("confusion_matrix.png")
+
+        # Classification report as a text artifact
+        report = classification_report(y_test, preds, target_names=encoder.classes_)
+        with open("classification_report.txt", "w") as f:
+            f.write(report)
+        mlflow.log_artifact("classification_report.txt")
