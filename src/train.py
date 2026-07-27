@@ -5,6 +5,7 @@ from sklearn.metrics import precision_score, recall_score, f1_score
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import confusion_matrix, classification_report
+import mlflow.sklearn
 
 mlflow.set_tracking_uri("sqlite:///mlflow.db")
 mlflow.set_experiment("Iris_Classification_Experiments")
@@ -89,3 +90,5 @@ for name, model in models.items():
         with open("classification_report.txt", "w") as f:
             f.write(report)
         mlflow.log_artifact("classification_report.txt")
+
+        mlflow.sklearn.log_model(model, name="model")

@@ -2,3 +2,5 @@ mlruns/
 mlflow.db
 __pycache__/
 *.pyc
+classification_report.txt
+confusion_matrix.png
