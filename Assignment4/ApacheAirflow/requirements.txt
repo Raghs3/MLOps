@@ -1,0 +1,5 @@
+# This assignment runs Apache Airflow inside Docker (see docker-compose.yaml) —
+# no local pip install or venv is needed for Airflow itself, since the
+# apache/airflow image already bundles a supported Python + Airflow.
+# Pinned version, for reference:
+apache-airflow==2.10.4
