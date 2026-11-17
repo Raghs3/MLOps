@@ -5,14 +5,14 @@ on:
     branches:
       - main
     paths:
-      - "Assingment7/mlops-cicd/**"
+      - "Assignment7/mlops-cicd/**"
       - ".github/workflows/ci-cd.yml"
 
   pull_request:
     branches:
       - main
     paths:
-      - "Assingment7/mlops-cicd/**"
+      - "Assignment7/mlops-cicd/**"
       - ".github/workflows/ci-cd.yml"
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: Assingment7/mlops-cicd
+        working-directory: Assignment7/mlops-cicd
 
     steps:
 
