@@ -18,7 +18,7 @@ If the tests fail, the pipeline stops and deployment is skipped.
 ## Project Structure
 
 ```
-Assingment7/mlops-cicd/
+Assignment7/mlops-cicd/
 ├── src/model.py                  # Model training code
 ├── tests/test_model.py           # Unit tests
 ├── requirements.txt              # Dependencies
@@ -28,7 +28,7 @@ Assingment7/mlops-cicd/
 .github/workflows/ci-cd.yml       # GitHub Actions workflow (repo root)
 ```
 
-The workflow lives at the repository root because GitHub Actions only reads `.github/workflows/` there. It runs inside `Assingment7/mlops-cicd` and only triggers when files in that folder change.
+The workflow lives at the repository root because GitHub Actions only reads `.github/workflows/` there. It runs inside `Assignment7/mlops-cicd` and only triggers when files in that folder change.
 
 ## Run Locally
 
