@@ -98,11 +98,13 @@ Provisioned automatically, grouped in three rows:
 
 | Scenario | Trigger | Expected | Observed |
 |----------|---------|----------|----------|
-| A. Normal traffic | `python simulate.py normal` | z-scores within +-3, accuracy about 95%, no alerts | _to fill after running_ |
-| B. Data drift | `python simulate.py drift` | petal/sepal length z-score above 3, FeatureDriftDetected fires | _to fill_ |
-| C. API errors | `python simulate.py errors` | about 30% 422 responses, HighErrorRate fires | _to fill_ |
-| D. Outage | `docker compose stop model-service` | status DOWN, ModelServiceDown fires after 30s | _to fill_ |
-| E. Recovery | `docker compose start model-service`, then scenario A | alerts resolve, counters restart from zero | _to fill_ |
+| A. Normal traffic | `python simulate.py normal` | z-scores within +-3, accuracy about 95%, no alerts | z-scores between about -3 and +2, rolling accuracy 0.974, no alert firing |
+| B. Data drift | `python simulate.py drift` | petal/sepal length z-score above 3, FeatureDriftDetected fires | z-score of petal_length and sepal_length rose to about 11-13; FeatureDriftDetected fired for exactly those two features, other panels stayed healthy |
+| C. API errors | `python simulate.py errors` | about 30% 422 responses, HighErrorRate fires | error rate 28.1% (HTTP 422); HighErrorRate fired after its 1 minute wait |
+| D. Outage | `docker compose stop model-service` | status DOWN, ModelServiceDown fires after 30s | ml_api target DOWN (host lookup failed); ModelServiceDown fired; HighErrorRate and LowModelAccuracy from the previous scenario were still active |
+| E. Recovery | `docker compose start model-service`, then scenario A | alerts resolve, counters restart from zero | target UP again, ModelServiceDown and HighErrorRate resolved, counters restarted from zero; LowModelAccuracy was still firing because its 5 minute window still held the degraded feedback |
+
+The simulator sends less accurate feedback in the drift and errors modes, so the accuracy drop in those scenarios comes from the simulator and not from the model getting worse.
 
 ## Notes
 
